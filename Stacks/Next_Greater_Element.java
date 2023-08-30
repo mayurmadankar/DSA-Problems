@@ -1,26 +1,23 @@
-//  time complexity - O(n)
-// space complexity - O(n)
+// time and space - O(n)
+import java.util.*;
 
-import java.util.Stack;
-
-public class Solution {
-    public static int[] nextGreaterElement(int[] arr, int n) {
-        Stack<Integer> st = new Stack<>();
-        int result[] = new int[n];
-
-        for (int i =  n - 1; i >= 0; i--) {
-            while (!st.isEmpty() && arr[i] >= st.peek()) {
-                st.pop();
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> nextGreaterMap = new HashMap<>();
+        Stack<Integer> stack = new Stack<>();
+        
+        for (int num : nums2) {
+            while (!stack.isEmpty() && num > stack.peek()) {
+                nextGreaterMap.put(stack.pop(), num);
             }
-            if (i < n) {
-                if (!st.isEmpty()) {
-                    result[i] = st.peek();
-                } else {
-                    result[i] = -1;
-                }
-            }
-            st.push(arr[i]);
+            stack.push(num);
         }
+        
+        int[] result = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            result[i] = nextGreaterMap.getOrDefault(nums1[i], -1);
+        }
+        
         return result;
     }
 }
